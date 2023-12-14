@@ -1,5 +1,6 @@
 import dynamic from 'next/dynamic';
 import IssueFormSkeleton from './loading';
+import delay from 'delay';
 
 const IssueForm = dynamic(
   //Loader function
@@ -9,6 +10,7 @@ const IssueForm = dynamic(
   }
 )
 const NewIssuePage = () => {
+  delay(5000);
   return (
     <IssueForm />
   )
