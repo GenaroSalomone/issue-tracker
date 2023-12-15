@@ -1,20 +1,21 @@
 'use client';
 
+import { Skeleton } from '@/app/components';
 import { User } from '@prisma/client';
 import { Select } from '@radix-ui/themes'
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { useEffect, useState } from 'react'
 
 const AsigneeSelect = () => {
-  const [users, setUsers] = useState<User[]>([]);
+  const { data: users, error, isLoading } = useQuery<User[]>({
+    queryKey: ['users'],
+    queryFn: () => axios.get<User[]>('/api/users').then(res => res.data),
+    staleTime: 60 * 1000, //60s
+    retry: 3 
+  });
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const { data } = await axios.get<User[]>('/api/users');
-      setUsers(data);
-    }
-    fetchUsers();
-  }, [])
+  if ( isLoading ) return <Skeleton />
+  if ( error ) return null //If error after 3 retrys fetching
 
   return (
     <Select.Root>
@@ -22,10 +23,9 @@ const AsigneeSelect = () => {
       <Select.Content>
         <Select.Group>
           <Select.Label>Suggestions</Select.Label>
-          { users.map( user => 
+          { users?.map( user => 
             <Select.Item key={user.id} value={user.id}>{user.name}</Select.Item> 
           )}
-          <Select.Item value="1">Genaro Salomone</Select.Item>
         </Select.Group>
       </Select.Content>
     </Select.Root>
