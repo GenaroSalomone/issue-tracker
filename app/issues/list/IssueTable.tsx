@@ -5,7 +5,6 @@ import React from "react";
 import NextLink from "next/link";
 import { Issue, Status } from "@prisma/client";
 import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
-import { AiOutlineConsoleSql } from "react-icons/ai";
 
 export interface IssueQuery {
   status: Status;
