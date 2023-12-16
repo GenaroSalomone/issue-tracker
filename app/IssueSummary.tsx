@@ -9,7 +9,7 @@ interface Props {
   closed: number;
 }
 
-const IssueSumary = ({ open, inProgress, closed }: Props) => {
+const IssueSummary = ({ open, inProgress, closed }: Props) => {
   const containers: {
     label: string;
     value: number;
@@ -35,4 +35,4 @@ const IssueSumary = ({ open, inProgress, closed }: Props) => {
   );
 };
 
-export default IssueSumary;
+export default IssueSummary;
