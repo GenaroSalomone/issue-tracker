@@ -10,6 +10,8 @@ interface Props {
   searchParams: IssueQuery;
 }
 
+export const dynamic = 'force-dynamic';
+
 const IssuesPage = async ({ searchParams }: Props) => {
   const statuses = Object.values(Status);
   const status = statuses.includes(searchParams.status)
