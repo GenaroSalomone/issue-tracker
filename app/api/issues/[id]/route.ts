@@ -3,6 +3,7 @@ import prisma from "@/prisma/client";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import authOptions from "../../auth/[...nextauth]/authOptions";
+import { Status } from "@prisma/client";
 
 export async function PATCH(
   request: NextRequest,
@@ -64,4 +65,33 @@ export async function DELETE(
   })
 
   return NextResponse.json({});
+}
+
+export async function PUT(
+  request: NextRequest,
+  { params }: { params : { id: string }}) {
+
+  const session = await getServerSession(authOptions);
+  if (!session)
+    return NextResponse.json({}, { status: 401 });
+  
+  const issue = await prisma.issue.findUnique({
+    where: { id: parseInt( params.id )}
+  })
+
+  if ( !issue )
+    return NextResponse.json({ error: 'Invalid issue' }, { status: 404 })
+
+  const { status } = await request.json();
+  const validStatuses = Object.values(Status);
+
+  if (!validStatuses.includes(status)) 
+    return NextResponse.json({ error: 'Invalid status' }, { status: 400 });
+
+  const updatedIssue = await prisma.issue.update({
+    where: { id: issue.id},
+    data: { status }
+  })
+
+  return NextResponse.json( updatedIssue );
 }
