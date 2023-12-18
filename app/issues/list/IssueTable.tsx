@@ -5,6 +5,7 @@ import React from "react";
 import NextLink from "next/link";
 import { Issue, Status } from "@prisma/client";
 import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
+import IssueStatusChooser from "@/app/components/IssueStatusChooser";
 
 export interface IssueQuery {
   status: Status;
@@ -61,11 +62,11 @@ const IssueTable = ({ searchParams, issues }: Props) => {
             <Table.Cell>
               <Link href={`/issues/${issue.id}`}>{issue.title}</Link>
               <div className="block md:hidden">
-                <IssueStatusBadge status={issue.status} />
+                <IssueStatusChooser issueId={issue.id} initialStatus={issue.status} />
               </div>
             </Table.Cell>
             <Table.Cell className="hidden md:table-cell">
-              <IssueStatusBadge status={issue.status} />
+              <IssueStatusChooser issueId={issue.id} initialStatus={issue.status} />
             </Table.Cell>
             <Table.Cell className="hidden md:table-cell">
               {issue.createdAt.toDateString()}
